@@ -11,6 +11,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Optional<Schedule> findScheduleById(Long id);
 
+    Optional<Schedule> findAccountScheduleByAccountIdAndId(Long accountId, Long scheduleId);
+
     @Query(value = "SELECT * FROM schedule WHERE (:name IS NULL OR name LIKE %:name%);", nativeQuery = true)
     List<Schedule> findAllScheduleOrderByUpdatedAtDesc(String name);
 }

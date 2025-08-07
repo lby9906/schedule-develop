@@ -23,9 +23,9 @@ public class ScheduleController {
     private final ScheduleReadService scheduleReadService;
 
     //일정 생성
-    @PostMapping
-    public ScheduleResponse create(@RequestBody ScheduleRequest scheduleRequest) {
-        return scheduleWriteService.create(scheduleRequest);
+    @PostMapping("/{account-id}")
+    public ScheduleResponse create(@RequestBody ScheduleRequest scheduleRequest, @PathVariable("account-id") Long accountId) {
+        return scheduleWriteService.create(scheduleRequest, accountId);
     }
 
     //일정 전체 조회
@@ -35,21 +35,23 @@ public class ScheduleController {
     }
 
     //일정 상세 조회
-    @GetMapping("/{scheduleId}")
+    @GetMapping("/{schedule-id}")
     public ScheduleByResponse findById(@PathVariable Long scheduleId) {
         return scheduleReadService.findById(scheduleId);
     }
 
     //일정 수정
-    @PatchMapping("/{scheduleId}")
-    public ScheduleUpdateResponse update(@RequestBody @Valid ScheduleUpdateRequest request, @PathVariable Long scheduleId) {
+    @PatchMapping("/{schedule-id}/accounts/{account-id}")
+    public ScheduleUpdateResponse update(@RequestBody @Valid ScheduleUpdateRequest request,
+                                         @PathVariable Long scheduleId,
+                                         @PathVariable("account-id") Long accountId) {
         LocalDateTime now = LocalDateTime.now();
-        return scheduleWriteService.update(request, scheduleId, now);
+        return scheduleWriteService.update(request, scheduleId, now, accountId);
     }
 
     //일정 삭제
-    @DeleteMapping("/{scheduleId}")
-    public String remove(@PathVariable Long scheduleId) {
-        return scheduleWriteService.remove(scheduleId);
+    @DeleteMapping("/{schedule-id}/accounts/{account-id}")
+    public String remove(@PathVariable Long scheduleId, @PathVariable("account-id") Long accountId) {
+        return scheduleWriteService.remove(scheduleId, accountId);
     }
 }
