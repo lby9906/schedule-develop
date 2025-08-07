@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 public class Account extends BaseEntity {
     private String name;
     private String email;
+    private String password;
 
-    public static Account of(String name, String email) {
-        return new Account(name, email);
+    public static Account of(String name, String email, String password) {
+        return new Account(name, email, password);
     }
 
     public void update(String name, String email) {

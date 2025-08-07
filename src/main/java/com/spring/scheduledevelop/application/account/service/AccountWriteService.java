@@ -23,7 +23,7 @@ public class AccountWriteService {
 
     //회원 생성
     public AccountResponse create(AccountRequest accountRequest) {
-        Account account = Account.of(accountRequest.getName(), accountRequest.getEmail());
+        Account account = Account.of(accountRequest.getName(), accountRequest.getEmail(), accountRequest.getPassword());
         accountRepository.save(account);
         return AccountResponse.from(account.getId(), account.getName(), account.getEmail());
     }
