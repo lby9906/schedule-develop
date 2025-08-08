@@ -4,6 +4,7 @@ import com.spring.scheduledevelop.application.account.dto.request.AccountRequest
 import com.spring.scheduledevelop.application.account.dto.request.AccountUpdateRequest;
 import com.spring.scheduledevelop.application.account.dto.response.AccountResponse;
 import com.spring.scheduledevelop.application.account.dto.response.AccountUpdateResponse;
+import com.spring.scheduledevelop.config.PasswordEncoder;
 import com.spring.scheduledevelop.domain.account.entity.Account;
 import com.spring.scheduledevelop.domain.account.repository.AccountRepository;
 import com.spring.scheduledevelop.exception.ErrorCode;
@@ -20,10 +21,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AccountWriteService {
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     //회원 생성
     public AccountResponse create(AccountRequest accountRequest) {
-        Account account = Account.of(accountRequest.getName(), accountRequest.getEmail(), accountRequest.getPassword());
+        Account account = Account.of(accountRequest.getName(), accountRequest.getEmail(), passwordEncoder.encode(accountRequest.getPassword()));
         accountRepository.save(account);
         return AccountResponse.from(account.getId(), account.getName(), account.getEmail());
     }
@@ -31,7 +33,7 @@ public class AccountWriteService {
     //회원 수정
     public AccountUpdateResponse update(Long accountId, AccountUpdateRequest accountUpdateRequest, LocalDateTime now) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         account.update(accountUpdateRequest.getName(), accountUpdateRequest.getEmail());
         accountRepository.save(account);
@@ -42,7 +44,7 @@ public class AccountWriteService {
     //회원 삭제
     public String remove(Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
         accountRepository.delete(account);
 
         return "삭제 완료";

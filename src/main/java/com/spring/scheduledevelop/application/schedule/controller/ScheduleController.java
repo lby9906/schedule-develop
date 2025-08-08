@@ -7,6 +7,7 @@ import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleResp
 import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleUpdateResponse;
 import com.spring.scheduledevelop.application.schedule.service.ScheduleReadService;
 import com.spring.scheduledevelop.application.schedule.service.ScheduleWriteService;
+import com.spring.scheduledevelop.config.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ScheduleController {
 
     //일정 생성
     @PostMapping("/{account-id}")
-    public ScheduleResponse create(@RequestBody ScheduleRequest scheduleRequest, @PathVariable("account-id") Long accountId) {
+    public ScheduleResponse create(@RequestBody ScheduleRequest scheduleRequest, @LoginUser @PathVariable("account-id") Long accountId) {
         return scheduleWriteService.create(scheduleRequest, accountId);
     }
 
@@ -36,22 +37,22 @@ public class ScheduleController {
 
     //일정 상세 조회
     @GetMapping("/{schedule-id}")
-    public ScheduleByResponse findById(@PathVariable Long scheduleId) {
+    public ScheduleByResponse findById(@LoginUser @PathVariable("schedule-id") Long scheduleId) {
         return scheduleReadService.findById(scheduleId);
     }
 
     //일정 수정
     @PatchMapping("/{schedule-id}/accounts/{account-id}")
     public ScheduleUpdateResponse update(@RequestBody @Valid ScheduleUpdateRequest request,
-                                         @PathVariable Long scheduleId,
-                                         @PathVariable("account-id") Long accountId) {
+                                         @PathVariable("schedule-id") Long scheduleId,
+                                         @LoginUser @PathVariable("account-id") Long accountId) {
         LocalDateTime now = LocalDateTime.now();
         return scheduleWriteService.update(request, scheduleId, now, accountId);
     }
 
     //일정 삭제
     @DeleteMapping("/{schedule-id}/accounts/{account-id}")
-    public String remove(@PathVariable Long scheduleId, @PathVariable("account-id") Long accountId) {
+    public String remove(@LoginUser @PathVariable("schedule-id") Long scheduleId, @PathVariable("account-id") Long accountId) {
         return scheduleWriteService.remove(scheduleId, accountId);
     }
 }

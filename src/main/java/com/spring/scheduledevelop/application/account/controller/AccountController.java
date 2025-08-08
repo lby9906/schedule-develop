@@ -6,10 +6,12 @@ import com.spring.scheduledevelop.application.account.dto.response.AccountRespon
 import com.spring.scheduledevelop.application.account.dto.response.AccountUpdateResponse;
 import com.spring.scheduledevelop.application.account.service.AccountReadService;
 import com.spring.scheduledevelop.application.account.service.AccountWriteService;
+import com.spring.scheduledevelop.config.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -27,13 +29,14 @@ public class AccountController {
 
     //회원 조회
     @GetMapping("/{account-id}")
-    public AccountResponse findById(@PathVariable("account-id") Long accountId) {
+    public AccountResponse findById(
+            @LoginUser @PathVariable("account-id") Long accountId) {
         return accountReadService.findById(accountId);
     }
 
     //회원 수정
     @PatchMapping("/{account-id}")
-    public AccountUpdateResponse update(@PathVariable("account-id") Long accountId, @RequestBody AccountUpdateRequest accountUpdateRequest) {
+    public AccountUpdateResponse update(@LoginUser @PathVariable("account-id") Long accountId, @RequestBody AccountUpdateRequest accountUpdateRequest) {
         LocalDateTime now = LocalDateTime.now();
 
         return accountWriteService.update(accountId, accountUpdateRequest, now);
@@ -41,7 +44,7 @@ public class AccountController {
 
     //회원 삭제
     @DeleteMapping("/{account-id}")
-    public String remove(@PathVariable("account-id") Long accountId) {
+    public String remove(@LoginUser @PathVariable("account-id") Long accountId) {
         return accountWriteService.remove(accountId);
     }
 }

@@ -19,7 +19,7 @@ public class AccountReadService {
     //회원 조회
     public AccountResponse findById(Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
         return AccountResponse.from(account.getId(), account.getName(), account.getEmail());
     }
 }

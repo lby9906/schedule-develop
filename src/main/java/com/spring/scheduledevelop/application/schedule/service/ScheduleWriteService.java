@@ -27,7 +27,7 @@ public class ScheduleWriteService {
     //일정 생성
     public ScheduleResponse create(ScheduleRequest request, Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         Schedule schedule = Schedule.of(request.getTitle(), request.getContents(), request.getName(), account);
         scheduleRepository.save(schedule);
@@ -38,7 +38,7 @@ public class ScheduleWriteService {
     //일정 수정
     public ScheduleUpdateResponse update(ScheduleUpdateRequest request, Long scheduleId, LocalDateTime updateAt, Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         Schedule schedule = scheduleRepository.findAccountScheduleByAccountIdAndId(account.getId(), scheduleId)
                 .orElseThrow(() -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_SCHEDULE));
@@ -50,7 +50,7 @@ public class ScheduleWriteService {
     //일정 삭제
     public String remove(Long scheduleId, Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
-                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUNT_ACCOUNT));
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         Schedule schedule = scheduleRepository.findAccountScheduleByAccountIdAndId(account.getId(), scheduleId)
                 .orElseThrow(() -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_SCHEDULE));
