@@ -12,7 +12,8 @@ public enum ErrorCode {
     ONLY_TEN_REGISTER_COMMENTS(HttpStatus.CONFLICT, "10개의 댓글만 작성할 수 있습니다."),
     NOT_FOUND_ACCOUNT(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
     LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다."),
+    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;
