@@ -7,6 +7,7 @@ import com.spring.scheduledevelop.application.account.dto.response.AccountUpdate
 import com.spring.scheduledevelop.application.account.service.AccountReadService;
 import com.spring.scheduledevelop.application.account.service.AccountWriteService;
 import com.spring.scheduledevelop.config.LoginUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class AccountController {
 
     //회원 생성
     @PostMapping
-    public AccountResponse create(@RequestBody AccountRequest accountRequest) {
+    public AccountResponse create(@Valid @RequestBody AccountRequest accountRequest) {
         return accountWriteService.create(accountRequest);
     }
 
@@ -36,7 +37,7 @@ public class AccountController {
 
     //회원 수정
     @PatchMapping("/{account-id}")
-    public AccountUpdateResponse update(@LoginUser @PathVariable("account-id") Long accountId, @RequestBody AccountUpdateRequest accountUpdateRequest) {
+    public AccountUpdateResponse update(@LoginUser @PathVariable("account-id") Long accountId, @Valid @RequestBody AccountUpdateRequest accountUpdateRequest) {
         LocalDateTime now = LocalDateTime.now();
 
         return accountWriteService.update(accountId, accountUpdateRequest, now);

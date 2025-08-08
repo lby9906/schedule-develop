@@ -25,7 +25,7 @@ public class ScheduleController {
 
     //일정 생성
     @PostMapping("/{account-id}")
-    public ScheduleResponse create(@RequestBody ScheduleRequest scheduleRequest, @LoginUser @PathVariable("account-id") Long accountId) {
+    public ScheduleResponse create(@LoginUser @Valid @RequestBody ScheduleRequest scheduleRequest, @LoginUser @PathVariable("account-id") Long accountId) {
         return scheduleWriteService.create(scheduleRequest, accountId);
     }
 
