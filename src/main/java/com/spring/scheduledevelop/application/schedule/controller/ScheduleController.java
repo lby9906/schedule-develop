@@ -8,6 +8,8 @@ import com.spring.scheduledevelop.application.schedule.service.ScheduleService;
 import com.spring.scheduledevelop.config.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -48,7 +50,10 @@ public class ScheduleController {
 
     //일정 삭제
     @DeleteMapping("/{schedule-id}/accounts/{account-id}")
-    public String remove(@LoginUser @PathVariable("schedule-id") Long scheduleId, @PathVariable("account-id") Long accountId) {
-        return scheduleService.remove(scheduleId, accountId);
+    public ResponseEntity<Void> remove(@LoginUser @PathVariable("schedule-id") Long scheduleId,
+                                       @PathVariable("account-id") Long accountId) {
+        scheduleService.remove(scheduleId, accountId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

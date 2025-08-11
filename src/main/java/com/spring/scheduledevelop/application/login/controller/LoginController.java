@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public String login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         LoginResponse loginResponse = loginService.login(loginRequest);
 
         HttpSession session = request.getSession();
@@ -29,6 +31,6 @@ public class LoginController {
 
         session.setAttribute(Const.LOGIN_USER, loginUser);
 
-        return "로그인 성공";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
