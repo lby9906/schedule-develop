@@ -4,41 +4,37 @@ import com.spring.scheduledevelop.application.schedule.dto.request.SchedulePageR
 import com.spring.scheduledevelop.application.schedule.dto.request.ScheduleRequest;
 import com.spring.scheduledevelop.application.schedule.dto.request.ScheduleUpdateRequest;
 import com.spring.scheduledevelop.application.schedule.dto.response.*;
-import com.spring.scheduledevelop.application.schedule.service.ScheduleReadService;
-import com.spring.scheduledevelop.application.schedule.service.ScheduleWriteService;
+import com.spring.scheduledevelop.application.schedule.service.ScheduleService;
 import com.spring.scheduledevelop.config.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/schedules")
 public class ScheduleController {
 
-    private final ScheduleWriteService scheduleWriteService;
-    private final ScheduleReadService scheduleReadService;
+    private final ScheduleService scheduleService;
 
     //일정 생성
     @PostMapping("/{account-id}")
     public ScheduleResponse create(@LoginUser @Valid @RequestBody ScheduleRequest scheduleRequest, @LoginUser @PathVariable("account-id") Long accountId) {
-        return scheduleWriteService.create(scheduleRequest, accountId);
+        return scheduleService.create(scheduleRequest, accountId);
     }
 
     //일정 전체 조회
     @GetMapping
     public PageResponseDto<SchedulePageResponse> findAll(@RequestParam(required = false) String name, SchedulePageRequest schedulePageRequest) {
-        return scheduleReadService.findAll(name, schedulePageRequest);
+        return scheduleService.findAll(name, schedulePageRequest);
     }
 
     //일정 상세 조회
     @GetMapping("/{schedule-id}")
     public ScheduleByResponse findById(@LoginUser @PathVariable("schedule-id") Long scheduleId) {
-        return scheduleReadService.findById(scheduleId);
+        return scheduleService.findById(scheduleId);
     }
 
     //일정 수정
@@ -47,12 +43,12 @@ public class ScheduleController {
                                          @PathVariable("schedule-id") Long scheduleId,
                                          @LoginUser @PathVariable("account-id") Long accountId) {
         LocalDateTime now = LocalDateTime.now();
-        return scheduleWriteService.update(request, scheduleId, now, accountId);
+        return scheduleService.update(request, scheduleId, now, accountId);
     }
 
     //일정 삭제
     @DeleteMapping("/{schedule-id}/accounts/{account-id}")
     public String remove(@LoginUser @PathVariable("schedule-id") Long scheduleId, @PathVariable("account-id") Long accountId) {
-        return scheduleWriteService.remove(scheduleId, accountId);
+        return scheduleService.remove(scheduleId, accountId);
     }
 }

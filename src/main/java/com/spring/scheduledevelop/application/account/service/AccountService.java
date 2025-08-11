@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountWriteService {
+public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,5 +48,13 @@ public class AccountWriteService {
         accountRepository.delete(account);
 
         return "삭제 완료";
+    }
+
+    //회원 조회
+    @Transactional(readOnly = true)
+    public AccountResponse findById(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
+                () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
+        return AccountResponse.from(account.getId(), account.getName(), account.getEmail());
     }
 }
