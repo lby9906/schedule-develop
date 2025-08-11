@@ -1,15 +1,15 @@
 package com.spring.scheduledevelop.application.schedule.controller;
 
+import com.spring.scheduledevelop.application.schedule.dto.request.SchedulePageRequest;
 import com.spring.scheduledevelop.application.schedule.dto.request.ScheduleRequest;
 import com.spring.scheduledevelop.application.schedule.dto.request.ScheduleUpdateRequest;
-import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleByResponse;
-import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleResponse;
-import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleUpdateResponse;
+import com.spring.scheduledevelop.application.schedule.dto.response.*;
 import com.spring.scheduledevelop.application.schedule.service.ScheduleReadService;
 import com.spring.scheduledevelop.application.schedule.service.ScheduleWriteService;
 import com.spring.scheduledevelop.config.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -31,8 +31,8 @@ public class ScheduleController {
 
     //일정 전체 조회
     @GetMapping
-    public List<ScheduleResponse> findAll(@RequestParam(required = false) String name) {
-        return scheduleReadService.findAll(name);
+    public PageResponseDto<SchedulePageResponse> findAll(@RequestParam(required = false) String name, SchedulePageRequest schedulePageRequest) {
+        return scheduleReadService.findAll(name, schedulePageRequest);
     }
 
     //일정 상세 조회

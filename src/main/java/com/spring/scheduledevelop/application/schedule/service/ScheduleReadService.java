@@ -1,7 +1,9 @@
 package com.spring.scheduledevelop.application.schedule.service;
 
+import com.spring.scheduledevelop.application.schedule.dto.request.SchedulePageRequest;
+import com.spring.scheduledevelop.application.schedule.dto.response.PageResponseDto;
 import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleByResponse;
-import com.spring.scheduledevelop.application.schedule.dto.response.ScheduleResponse;
+import com.spring.scheduledevelop.application.schedule.dto.response.SchedulePageResponse;
 import com.spring.scheduledevelop.domain.schedule.entity.Schedule;
 import com.spring.scheduledevelop.domain.schedule.repository.ScheduleRepository;
 import com.spring.scheduledevelop.exception.ErrorCode;
@@ -20,12 +22,23 @@ public class ScheduleReadService {
     private final ScheduleRepository scheduleRepository;
 
     //전체 일정 조회
-    public List<ScheduleResponse> findAll(String name) {
-        List<Schedule> scheduleList = scheduleRepository.findAllScheduleOrderByUpdatedAtDesc(name);
-        return scheduleList.stream()
-                .map(schedule -> ScheduleResponse.from(schedule))
-                .collect(Collectors.toList());
+    public PageResponseDto<SchedulePageResponse> findAll(String name, SchedulePageRequest schedulePageRequest) {
+        List<Schedule> scheduleList = scheduleRepository.findAllPageScheduleOrderByUpdatedDesc(name);
+
+        List<SchedulePageResponse> pageResponses =
+                scheduleList.stream()
+                .map(page -> {
+                    Long commentCount = scheduleRepository.countCommentById(page.getId());
+
+                    return SchedulePageResponse.from(page.getTitle(), commentCount,
+                        page.getCreatedAt(), page.getUpdatedAt(), page.getName());
+                }).collect(Collectors.toList());
+
+        Long totalElements = scheduleRepository.countAllSchedules();
+
+        return PageResponseDto.of(schedulePageRequest.getPageNumber(), schedulePageRequest.getSize(), totalElements, pageResponses);
     }
+
 
     //선택 일정 조회
     public ScheduleByResponse findById(Long scheduleId) {
