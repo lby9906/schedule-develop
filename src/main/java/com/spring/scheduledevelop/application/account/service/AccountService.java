@@ -42,12 +42,10 @@ public class AccountService {
     }
 
     //회원 삭제
-    public String remove(Long accountId) {
+    public void remove(Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
         accountRepository.delete(account);
-
-        return "삭제 완료";
     }
 
     //회원 조회

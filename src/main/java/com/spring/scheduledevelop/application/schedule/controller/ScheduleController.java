@@ -22,7 +22,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     //일정 생성
-    @PostMapping("/{account-id}")
+    @PostMapping("/accounts/{account-id}")
     public ScheduleResponse create(@LoginUser @Valid @RequestBody ScheduleRequest scheduleRequest, @LoginUser @PathVariable("account-id") Long accountId) {
         return scheduleService.create(scheduleRequest, accountId);
     }

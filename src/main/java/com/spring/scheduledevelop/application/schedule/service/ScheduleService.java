@@ -50,7 +50,7 @@ public class ScheduleService {
     }
 
     //일정 삭제
-    public String remove(Long scheduleId, Long accountId) {
+    public void remove(Long scheduleId, Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
@@ -58,8 +58,6 @@ public class ScheduleService {
                 .orElseThrow(() -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_SCHEDULE));
 
         scheduleRepository.delete(schedule);
-
-        return "삭제 완료";
     }
 
     //전체 일정 조회
