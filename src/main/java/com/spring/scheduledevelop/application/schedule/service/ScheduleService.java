@@ -63,7 +63,10 @@ public class ScheduleService {
     //전체 일정 조회
     @Transactional(readOnly = true)
     public PageResponseDto<SchedulePageResponse> findAll(String name, SchedulePageRequest schedulePageRequest) {
-        List<Schedule> scheduleList = scheduleRepository.findAllPageScheduleOrderByUpdatedDesc(name);
+        long offset = (schedulePageRequest.getPageNumber() - 1) * schedulePageRequest.getSize();
+        long limit = schedulePageRequest.getSize();
+
+        List<Schedule> scheduleList = scheduleRepository.findAllPageScheduleOrderByUpdatedDesc(name, limit, offset);
 
         List<SchedulePageResponse> pageResponses =
                 scheduleList.stream()
