@@ -38,9 +38,7 @@ public class AccountController {
     //회원 수정
     @PatchMapping("/{account-id}")
     public AccountUpdateResponse update(@LoginUser @PathVariable("account-id") Long accountId, @Valid @RequestBody AccountUpdateRequest accountUpdateRequest) {
-        LocalDateTime now = LocalDateTime.now();
-
-        return accountService.update(accountId, accountUpdateRequest, now);
+        return accountService.update(accountId, accountUpdateRequest);
     }
 
     //회원 삭제

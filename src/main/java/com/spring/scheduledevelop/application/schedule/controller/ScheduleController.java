@@ -44,8 +44,7 @@ public class ScheduleController {
     public ScheduleUpdateResponse update(@RequestBody @Valid ScheduleUpdateRequest request,
                                          @PathVariable("schedule-id") Long scheduleId,
                                          @LoginUser @PathVariable("account-id") Long accountId) {
-        LocalDateTime now = LocalDateTime.now();
-        return scheduleService.update(request, scheduleId, now, accountId);
+        return scheduleService.update(request, scheduleId, accountId);
     }
 
     //일정 삭제

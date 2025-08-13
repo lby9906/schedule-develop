@@ -38,7 +38,7 @@ public class ScheduleService {
     }
 
     //일정 수정
-    public ScheduleUpdateResponse update(ScheduleUpdateRequest request, Long scheduleId, LocalDateTime updateAt, Long accountId) {
+    public ScheduleUpdateResponse update(ScheduleUpdateRequest request, Long scheduleId, Long accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
@@ -46,7 +46,9 @@ public class ScheduleService {
                 .orElseThrow(() -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_SCHEDULE));
 
         schedule.update(request.getTitle(), request.getName());
-        return ScheduleUpdateResponse.from(schedule, updateAt);
+        scheduleRepository.flush();
+
+        return ScheduleUpdateResponse.from(schedule, schedule.getUpdatedAt());
     }
 
     //일정 삭제

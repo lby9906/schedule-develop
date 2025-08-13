@@ -31,14 +31,16 @@ public class AccountService {
     }
 
     //회원 수정
-    public AccountUpdateResponse update(Long accountId, AccountUpdateRequest accountUpdateRequest, LocalDateTime now) {
+    public AccountUpdateResponse update(Long accountId, AccountUpdateRequest accountUpdateRequest) {
         Account account = accountRepository.findById(accountId).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         account.update(accountUpdateRequest.getName(), accountUpdateRequest.getEmail());
         accountRepository.save(account);
+        accountRepository.flush();
+
         return AccountUpdateResponse.from(account.getId(), account.getName(),
-                account.getEmail(), account.getCreatedAt(), now);
+                account.getEmail(), account.getCreatedAt(), account.getUpdatedAt());
     }
 
     //회원 삭제

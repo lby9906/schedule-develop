@@ -35,8 +35,7 @@ public class CommentController {
                                         @PathVariable("schedule-id") Long scheduleId,
                                         @LoginUser @PathVariable("account-id") Long accountId,
                                         @PathVariable("comment-id") Long commentId) {
-        LocalDateTime nowTime = LocalDateTime.now();
-        return commentService.update(request, scheduleId, accountId, commentId, nowTime);
+        return commentService.update(request, scheduleId, accountId, commentId);
     }
 
     //댓글 삭제

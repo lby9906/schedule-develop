@@ -44,8 +44,7 @@ public class CommentService {
 
     //댓글 수정
     public CommentUpdateResponse update(CommentRequest request, Long scheduleId,
-                                        Long accountId, Long commentId,
-                                        LocalDateTime now) {
+                                        Long accountId, Long commentId) {
         accountRepository.findById(accountId).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
 
@@ -56,7 +55,9 @@ public class CommentService {
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_COMMENT));
 
         comment.update(request.getContents());
-        return CommentUpdateResponse.from(comment, now);
+        commentRepository.flush();
+
+        return CommentUpdateResponse.from(comment, comment.getUpdatedAt());
     }
 
     //댓글 삭제
