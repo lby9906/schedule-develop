@@ -22,6 +22,7 @@ public class LoginController {
 
     private final LoginService loginService;
 
+    //로그인
     @PostMapping
     public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         LoginResponse loginResponse = loginService.login(loginRequest);

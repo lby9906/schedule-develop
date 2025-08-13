@@ -7,10 +7,19 @@ import java.util.List;
 @Getter
 public class PageResponseDto<T> {
 
+    //현재 페이지 번호
     private final long page;
+
+    //한 페이지에 담긴 데이터 개수
     private final long size;
+
+    //전체 데이터 개수
     private final long totalElements;
+
+    //총 페이지 수
     private final int totalPages;
+
+    //조회할 데이터
     private List<T> contents;
 
     public PageResponseDto(long page, long size, long totalElements, List<T> contents) {

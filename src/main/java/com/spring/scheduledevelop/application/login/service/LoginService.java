@@ -16,6 +16,7 @@ public class LoginService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //로그인
     public LoginResponse login(LoginRequest loginRequest) {
         Account account = accountRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
@@ -27,6 +28,7 @@ public class LoginService {
         return LoginResponse.from(account.getId(), account.getName(), account.getEmail());
     }
 
+    //회원 조회
     public LoginResponse findById(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new ScheduleDevelopException(ErrorCode.NOT_FOUND_ACCOUNT));
